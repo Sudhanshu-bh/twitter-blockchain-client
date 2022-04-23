@@ -27,10 +27,9 @@ const style = {
 
 interface SidebarProps {
   initialSelectedIcon?: string
-  customId: string
 }
 
-const Sidebar = ({ initialSelectedIcon = 'Home', customId }: SidebarProps) => {
+const Sidebar = ({ initialSelectedIcon = 'Home' }: SidebarProps) => {
   const Home = 'Home'
   const Explore = 'Explore'
   const Notifications = 'Notifications'
@@ -40,6 +39,7 @@ const Sidebar = ({ initialSelectedIcon = 'Home', customId }: SidebarProps) => {
   const Profile = 'Profile'
   const More = 'More'
 
+  const sidebar = 'sidebar'
   const sidebarInnerContainer = 'sidebarInnerContainer'
 
   const [selected, setSelected] = useState<string>(initialSelectedIcon)
@@ -48,12 +48,12 @@ const Sidebar = ({ initialSelectedIcon = 'Home', customId }: SidebarProps) => {
     const sidebarInner = document.getElementById(sidebarInnerContainer) as Element
     let sidebarInnerWidth = window.getComputedStyle(sidebarInner).width
 
-    const sidebarOuter = document.getElementById(customId)
+    const sidebarOuter = document.getElementById(sidebar)
     sidebarOuter!.style.width = sidebarInnerWidth
   }, [])
 
   return (
-    <div id={customId}>
+    <div id={sidebar}>
       <div className={style.wrapper} id={sidebarInnerContainer}>
         <div className={style.twitterIconContainer}>
           <VscTwitter />
