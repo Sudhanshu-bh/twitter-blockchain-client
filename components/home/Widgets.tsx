@@ -3,10 +3,12 @@ import { BiSearch } from 'react-icons/bi'
 import For from '../common/For'
 import NewsItem from './NewsItem'
 import { useEffect } from 'react'
+import FollowSuggestions from './FollowSuggestions'
 
 const style = {
-  wrapper: `fixed p-4`,
-  searchBar: `flex items-center bg-[#243340] px-5 py-3 rounded-3xl`,
+  // wrapper: `fixed p-4`,
+  wrapper: `p-4`,
+  searchBar: `fixed flex items-center bg-[#243340] px-5 py-3 rounded-3xl`,
   searchIcon: `text-[#8899a6] mr-2 text-xl`,
   inputBox: `bg-transparent outline-none mx-1`,
   section: `bg-[#192734] my-5 rounded-xl overflow-hidden`,
@@ -25,28 +27,71 @@ interface WidgetsProps {}
 const Widgets = (props: WidgetsProps) => {
   const widgets = 'widgets'
   const WidgetsContainerInner = 'WidgetsContainerInner'
+  const searchTwitter = 'searchTwitter'
+  const nonSearch = 'nonSearch'
+  const whatsHappening = 'whatsHappening'
+  let WidgetsOuter: Element
+  let WidgetsInner: HTMLElement | null
+  let searchTwwitterEle: Element
+  let whatsHappeningEle: Element
+  let nonSearchEle: Element
 
   useEffect(() => {
-    const WidgetsOuter = document.getElementById(widgets) as Element
-    const WidgetsInner = document.getElementById(WidgetsContainerInner)
+    WidgetsOuter = document.getElementById(widgets) as Element
+    WidgetsInner = document.getElementById(WidgetsContainerInner)
     WidgetsInner!.style.width = window.getComputedStyle(WidgetsOuter).width
+    searchTwwitterEle = document.getElementById(searchTwitter)!
+    nonSearchEle = document.getElementById(nonSearch)!
+    whatsHappeningEle = document.getElementById(whatsHappening)!
+
+    document.getElementById(searchTwitter)!.style.width = getComputedStyle(whatsHappeningEle).width
+    ;(searchTwwitterEle as HTMLElement).style.zIndex = '5'
+    ;(whatsHappeningEle as HTMLElement).style.marginTop = `${
+      Number(getComputedStyle(searchTwwitterEle).height.split('p')[0]) + 15
+    }px`
+
+    window.onscroll = sidebarRightScroll
   }, [])
+
+  const sidebarRightScroll = (e: UIEvent | any) => {
+    console.log(window.innerHeight)
+    console.log(WidgetsInner!.offsetHeight)
+    console.log(window.scrollY)
+
+    if (window.innerHeight + window.scrollY + 10 >= WidgetsInner!.offsetHeight) {
+      console.log('overrrrrrrrrrrrrrrrr')
+
+      WidgetsInner!.style.position = 'fixed'
+      WidgetsInner!.style.top = `-${WidgetsInner!.offsetHeight - window.innerHeight - 10}px`
+      ;(nonSearchEle as HTMLElement).style.zIndex = '1'
+    } else {
+      WidgetsInner!.style.position = 'relative'
+      WidgetsInner!.style.top = '0px'
+    }
+  }
 
   return (
     <div id={widgets} className="flex-[1]">
-      <div className={style.wrapper} id={WidgetsContainerInner}>
-        <div className={style.searchBar}>
+      <div
+        className={style.wrapper}
+        id={WidgetsContainerInner}
+        onScroll={(event) => sidebarRightScroll(event)}
+      >
+        <div className={style.searchBar} id={searchTwitter}>
           <BiSearch className={style.searchIcon} />
           <input className={style.inputBox} type="text" placeholder="Search Twitter" />
         </div>
-        <div className={style.section}>
-          <div className={style.title}>What’s happening</div>
-          <For array={news} RepeatElement={NewsItem} />
-          <div className={style.showMore}>Show more</div>
-        </div>
-        <div className={style.section}>
-          <div className={style.title}>Who to follow</div>
-          {/* <For array={whoToFollow} RepeatElement={} /> */}
+        <div id={nonSearch}>
+          <div className={style.section} id={whatsHappening}>
+            <div className={style.title}>What’s happening</div>
+            <For array={news} RepeatElement={NewsItem} />
+            <div className={style.showMore}>Show more</div>
+          </div>
+          <div className={style.section}>
+            <div className={style.title}>Who to follow</div>
+            <For array={whoToFollow} RepeatElement={FollowSuggestions} />
+            <div className={style.showMore}>Show more</div>
+          </div>
         </div>
       </div>
     </div>
