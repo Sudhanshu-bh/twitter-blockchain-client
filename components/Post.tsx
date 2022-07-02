@@ -30,7 +30,6 @@ interface PostProps {
 
 const Post = (props: PostProps) => {
   const { displayName, username, avatarUrl, text, isProfileImageNft, timestamp } = props
-  console.log(timestamp)
   return (
     <div className={style.wrapper}>
       <div>

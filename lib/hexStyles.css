@@ -2,9 +2,11 @@
   display: grid;
   place-items: center;
   position: relative;
+  margin-top: -4.25rem;
+  margin-left: 1rem;
   overflow: hidden;
-  width: 6.5rem;
-  height: 6rem;
+  width: 8.5rem;
+  height: 8rem;
   box-sizing: border-box;
   clip-path: polygon(0% 50%, 25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%);
   -webkit-clip-path: polygon(

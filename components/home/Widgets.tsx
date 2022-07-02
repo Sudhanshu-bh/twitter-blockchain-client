@@ -54,13 +54,7 @@ const Widgets = (props: WidgetsProps) => {
   }, [])
 
   const sidebarRightScroll = (e: UIEvent | any) => {
-    console.log(window.innerHeight)
-    console.log(WidgetsInner!.offsetHeight)
-    console.log(window.scrollY)
-
     if (window.innerHeight + window.scrollY + 10 >= WidgetsInner!.offsetHeight) {
-      console.log('overrrrrrrrrrrrrrrrr')
-
       WidgetsInner!.style.position = 'fixed'
       WidgetsInner!.style.top = `-${WidgetsInner!.offsetHeight - window.innerHeight - 10}px`
       ;(nonSearchEle as HTMLElement).style.zIndex = '1'

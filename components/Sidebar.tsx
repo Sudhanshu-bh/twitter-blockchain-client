@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 import { useEffect, useRef, useState } from 'react'
 import { FiBell, FiMoreHorizontal } from 'react-icons/fi'
 import { VscTwitter } from 'react-icons/vsc'

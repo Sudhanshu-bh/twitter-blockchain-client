@@ -3,16 +3,12 @@
 import Feed from '../components/home/Feed'
 import Widgets from '../components/home/Widgets'
 import Sidebar from '../components/Sidebar'
-
-const style = {
-  wrapper: `flex justify-center select-none bg-[#15202b] text-white`,
-  content: `max-w-[1400px] w-[72%] flex justify-between`,
-}
+import { page } from '../styles/gStyles'
 
 const Home = () => {
   return (
-    <div className={style.wrapper}>
-      <div className={style.content}>
+    <div className={page.outerWrapper}>
+      <div className={page.outerContent}>
         <Sidebar />
         <Feed />
         <Widgets />

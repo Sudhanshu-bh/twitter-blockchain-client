@@ -40,7 +40,7 @@ export default function TweetBox(props: TweetBoxProps) {
     <div className={style.wrapper}>
       <div className={style.tweetBoxLeft}>
         <img
-          src="https://scontent.fdel58-1.fna.fbcdn.net/v/t1.6435-9/207502429_789463771758563_8799433428446380283_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=RIVsegECCfgAX_8rFSo&tn=JbwVai6Gok4vge3N&_nc_ht=scontent.fdel58-1.fna&oh=00_AT_-PZ-KRjFXGYvhmXd8D-wTuAIlg4IgiEfIex8UdsBr5g&oe=62891F40"
+          src="https://i.pinimg.com/originals/7f/3a/8d/7f3a8d5db6a8f9d9dbd52c430bbc1f2b.jpg"
           alt="Profile image"
           className={style.profileImage}
         />

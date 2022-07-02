@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import { IconType } from 'react-icons'
+import { useRouter } from 'next/router'
 
 const style = {
   wrapper: `w-min flex items-center rounded-[100px] p-4 cursor-pointer hover:bg-[#333c45] transition-all hover:duration-200 hover:ease-in-out`,
@@ -17,11 +18,14 @@ interface Props {
 }
 
 const SidebarOption: FC<Props> = ({ text, Icon, isActive, setSelected, redirect }) => {
+  const router = useRouter()
+
   return (
     <div
       className={style.wrapper}
       onClick={() => {
         setSelected(text)
+        redirect && router.push(redirect)
       }}
     >
       <div className={style.iconContainer}>
