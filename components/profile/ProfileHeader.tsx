@@ -2,6 +2,7 @@ import * as React from 'react'
 import { BsArrowLeftShort } from 'react-icons/bs'
 import { useRouter } from 'next/router'
 import { gColors } from '../../styles/gStyles'
+import If from '../common/If'
 
 const style = {
   header: `py-1 px-3 mt-2 flex items-center`,
@@ -25,6 +26,7 @@ const ProfileHeader: React.FC<IProfileHeaderProps> = (props) => {
   const router = useRouter()
 
   const isProfileImageNft = false
+  const currentUser = '0xbb21ebb22C06b2137810865607DccA4c9Ef2323D'
 
   return (
     <>
@@ -51,6 +53,21 @@ const ProfileHeader: React.FC<IProfileHeaderProps> = (props) => {
             alt=""
             className={style.profileImage}
           />
+        </div>
+        <div className={style.details}>
+          <div className={style.primary}>Chandler Bing</div>
+          <div className={style.secondary}>
+            <If condition={!!currentUser}>
+              @{currentUser.slice(0,8)}...{currentUser.slice(-5)}
+            </If>
+          </div>
+        </div>
+        <div className={style.nav}>
+          <div>About</div>
+          <div className={style.activeNav}>Tweets</div>
+          <div>Tweets & Replies</div>
+          <div>Media</div>
+          <div>Likes</div>
         </div>
       </div>
     </>
