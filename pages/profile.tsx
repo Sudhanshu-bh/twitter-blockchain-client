@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { FC } from 'react'
 import Widgets from '../components/home/Widgets'
 import ProfileHeader from '../components/profile/ProfileHeader'
 import ProfileTweets from '../components/profile/ProfileTweets'
@@ -11,7 +11,7 @@ const style = {
 
 interface IprofileProps {}
 
-const profile: React.FC<IprofileProps> = (props) => {
+const profile: FC<IprofileProps> = (props) => {
   return (
     <div className={page.outerWrapper}>
       <div className={page.outerContent}>
