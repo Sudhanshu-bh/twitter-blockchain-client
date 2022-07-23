@@ -8,12 +8,20 @@ export const TwitterContext = createContext<any>({})
 export const TwitterProvider = ({ children }: any) => {
   const [appStatus, setAppStatus] = useState('loading')
   const [currentAccount, setCurrentAccount] = useState('')
+  const [currentUser, setCurrentUser] = useState({})
+  const [tweets, setTweets] = useState([])
 
   const router = useRouter()
 
   useEffect(() => {
     checkIfWalletConnected()
   }, [])
+
+  useEffect(() => {
+    if (!currentAccount || appStatus !== connected) return
+    getCurrentUserDetails()
+    fetchTweets()
+  }, [currentAccount, appStatus])
 
   const checkIfWalletConnected = async () => {
     if (!(window as any).ethereum) return setAppStatus(noMetaMask)
@@ -66,6 +74,7 @@ export const TwitterProvider = ({ children }: any) => {
         _type: 'user',
         _id: userWalletAddress,
         name: 'Unnamed',
+        handle: Date.now(),
         isProfileImageNft: false,
         profileImage: 'https://www.tbdjfnsvk.com',
         walletAddress: userWalletAddress,
@@ -80,8 +89,51 @@ export const TwitterProvider = ({ children }: any) => {
     }
   }
 
+  const fetchTweets = async () => {
+    const query = `
+    *[_type == "tweet"]{
+      "author": author->{name, handle, walletAddress, profileImage, isProfileImageNft},
+      tweetText,
+      timestamp
+    }|order(timestamp desc)
+    `
+    const sanityResp = await client.fetch(query)
+
+    setTweets(sanityResp)
+  }
+
+  const getCurrentUserDetails = async () => {
+    if (appStatus != connected) return
+
+    const query = `
+      *[_type == "user" && _id == "${currentAccount}"]{
+        "tweet": tweet[]->{timestamp, tweetText}|order(timestamp desc),
+        name,
+        handle,
+        profileImage,
+        isProfileImageNft,
+        coverImage,
+        walletAddress
+      }
+    `
+
+    const sanityResp = await client.fetch(query)
+
+    setCurrentUser(sanityResp[0])
+  }
+
   return (
-    <TwitterContext.Provider value={{ appStatus, currentAccount, connectToWallet }}>
+    <TwitterContext.Provider
+      value={{
+        appStatus,
+        currentAccount,
+        connectToWallet,
+        fetchTweets,
+        tweets,
+        currentUser,
+        getCurrentUserDetails,
+      }}
+    >
       {children}
     </TwitterContext.Provider>
   )

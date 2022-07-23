@@ -1,8 +1,10 @@
-import { ChangeEvent, MouseEvent, useState } from 'react'
+import { ChangeEvent, MouseEvent, useState, useContext } from 'react'
 import { BsCardImage, BsEmojiSmile } from 'react-icons/bs'
 import { RiFileGifLine, RiBarChartHorizontalFill, RiBarChartHorizontalLine } from 'react-icons/ri'
 import { IoMdCalendar } from 'react-icons/io'
 import { MdOutlineLocationOn } from 'react-icons/md'
+import { client } from '../../lib/client'
+import { TwitterContext } from '../../context/TwitterContext'
 
 const style = {
   wrapper: `px-4 flex flex-row border-b border-[#38444d] pb-4`,
@@ -23,6 +25,7 @@ export interface TweetBoxProps {}
 export default function TweetBox(props: TweetBoxProps) {
   const [tweetMessage, setTweetMessage] = useState('')
   const [isTweetValid, setIsTweetValid] = useState(false)
+  const { currentAccount, currentUser, tweets, fetchTweets } = useContext(TwitterContext)
 
   const handleTweetMsgChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = event.target
@@ -31,18 +34,50 @@ export default function TweetBox(props: TweetBoxProps) {
     else setIsTweetValid(false)
   }
 
-  const postTweet = (event: MouseEvent<HTMLButtonElement>) => {
+  const postTweet = async (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
-    console.log(tweetMessage)
+
+    if (!tweetMessage) return
+
+    const tweetId = `${currentAccount}_${Date.now()}`
+
+    const tweetDoc = {
+      _type: 'tweet',
+      _id: tweetId,
+      tweetText: tweetMessage,
+      timestamp: new Date(Date.now()).toISOString(),
+      author: {
+        _key: tweetId,
+        _type: 'reference',
+        _ref: currentAccount,
+      },
+    }
+
+    await client.createIfNotExists(tweetDoc)
+
+    await client
+      .patch(currentAccount)
+      .setIfMissing({ tweets: [] })
+      .insert('after', 'tweets[-1]', [
+        {
+          _key: tweetId,
+          _type: 'reference',
+          _ref: tweetId,
+        },
+      ])
+      .commit()
+
+    setTweetMessage('')
+    fetchTweets()
   }
 
   return (
     <div className={style.wrapper}>
       <div className={style.tweetBoxLeft}>
         <img
-          src="https://i.pinimg.com/originals/7f/3a/8d/7f3a8d5db6a8f9d9dbd52c430bbc1f2b.jpg"
+          src={currentUser.profileImage}
           alt="Profile image"
-          className={style.profileImage}
+          className={`${style.profileImage} ${currentUser.isProfileImageNft && 'smallHex'}`}
         />
       </div>
       <div className={style.tweetBoxRight}>

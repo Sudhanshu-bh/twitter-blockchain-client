@@ -54,7 +54,7 @@ const Home = () => {
     <div className={style.loginContainer}>
       <Image src={metamaskLogo} height={200} width={200} />
       <div className={style.walletConnectButton} onClick={() => connectToWallet()}>
-        Connect Wallet
+        Login Using Metamask
       </div>
     </div>
   )

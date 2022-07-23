@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { BsFillPatchCheckFill } from 'react-icons/bs'
 import { FaRegComment, FaRetweet } from 'react-icons/fa'
 import { FiShare } from 'react-icons/fi'
@@ -10,48 +11,65 @@ const style = {
   profileImage: `rounded-full h-[40px] w-[40px] object-cover`,
   postMain: `flex-1 px-4`,
   headerDetails: `flex items-center`,
-  name: `font-bold mr-1`,
+  name: `font-medium mr-1`,
   // verified: `text-[0.8rem]`,
   handleAndTimeAgo: `text-[#8899a6] ml-1`,
-  tweet: `my-2`,
+  tweet: `my-2 font-light`,
   image: `rounded-3xl`,
   footer: `flex justify-between mr-28 mt-4 text-[#8899a6]`,
   footerIcon: `rounded-full text-lg p-2`,
 }
 
 interface PostProps {
-  displayName: string
-  username: string
-  avatarUrl: string
-  text: string
-  isProfileImageNft: boolean
+  profileImage: string
+  tweetText: string
   timestamp: string // '2020-06-01T12:00:00:000Z',
+  author: {
+    name: string
+    handle: string
+    profileImage: string
+    isProfileImageNft: boolean
+  }
 }
 
 const Post = (props: PostProps) => {
-  const { displayName, username, avatarUrl, text, isProfileImageNft, timestamp } = props
+  const {
+    author: { name: uName },
+    author: { handle },
+    author: { isProfileImageNft },
+    author: { profileImage },
+    tweetText,
+    timestamp,
+  } = props
+  console.log(props)
+
+  const [uHandle, setUHandle] = useState('')
+
+  useEffect(() => {
+    setUHandle(handle)
+  }, [handle])
+
   return (
     <div className={style.wrapper}>
       <div>
         <img
-          src={avatarUrl}
-          alt={username}
+          src={profileImage}
+          alt="Profile Image"
           className={`${style.profileImage} ${isProfileImageNft && 'smallHex'}`}
         />
       </div>
       <div className={style.postMain}>
         <div>
           <span className={style.headerDetails}>
-            <span className={style.name}>{displayName}</span>
+            <span className={style.name}>{uName}</span>
             <If condition={isProfileImageNft}>
               <BsFillPatchCheckFill />
             </If>
             <span className={style.handleAndTimeAgo}>
-              @{username.slice(0, 4)}...{username.slice(-4)} ·{' '}
-              {format(new Date(timestamp).getTime())}
+              @{uHandle} · {format(new Date(timestamp).getTime())}
             </span>
           </span>
-          <div className={style.tweet}>{text}</div>
+          <div className={style.tweet}>{tweetText}</div>
         </div>
         <div className={style.footer}>
           <div className={`${style.footerIcon} hover:bg-[#1e364a] hover:text-[#1d9bf0]`}>
