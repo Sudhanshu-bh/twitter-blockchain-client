@@ -74,9 +74,10 @@ export const TwitterProvider = ({ children }: any) => {
         _type: 'user',
         _id: userWalletAddress,
         name: 'Unnamed',
-        handle: Date.now(),
+        handle: Date.now().toString(),
         isProfileImageNft: false,
-        profileImage: 'https://www.tbdjfnsvk.com',
+        profileImage: '',
+        coverImage: '',
         walletAddress: userWalletAddress,
       }
 
@@ -107,7 +108,7 @@ export const TwitterProvider = ({ children }: any) => {
 
     const query = `
       *[_type == "user" && _id == "${currentAccount}"]{
-        "tweet": tweet[]->{timestamp, tweetText}|order(timestamp desc),
+        "tweets": tweets[]->{timestamp, tweetText}|order(timestamp desc),
         name,
         handle,
         profileImage,
@@ -120,6 +121,7 @@ export const TwitterProvider = ({ children }: any) => {
     const sanityResp = await client.fetch(query)
 
     setCurrentUser(sanityResp[0])
+    console.log(sanityResp[0])
   }
 
   return (

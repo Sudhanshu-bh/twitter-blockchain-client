@@ -34,16 +34,21 @@ interface PostProps {
 
 const Post = (props: PostProps) => {
   const {
-    author: { name: uName },
-    author: { handle },
-    author: { isProfileImageNft },
-    author: { profileImage },
+    author: { name: uName, handle, isProfileImageNft, profileImage },
     tweetText,
     timestamp,
   } = props
-  console.log(props)
 
   const [uHandle, setUHandle] = useState('')
+
+  const [tweetTextFinal] = useState(
+    tweetText.split('\n').map((line, index) => (
+      <div key={index}>
+        {line}
+        {line === '' && <div>&#10240;</div>}
+      </div>
+    ))
+  )
 
   useEffect(() => {
     setUHandle(handle)
@@ -69,7 +74,7 @@ const Post = (props: PostProps) => {
               @{uHandle} · {format(new Date(timestamp).getTime())}
             </span>
           </span>
-          <div className={style.tweet}>{tweetText}</div>
+          <div className={style.tweet}>{tweetTextFinal}</div>
         </div>
         <div className={style.footer}>
           <div className={`${style.footerIcon} hover:bg-[#1e364a] hover:text-[#1d9bf0]`}>

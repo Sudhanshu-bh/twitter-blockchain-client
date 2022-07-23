@@ -7,6 +7,11 @@ interface ForProps {
 }
 
 const For: FC<ForProps> = ({ array, RepeatElement }) => {
+  if (array == null || array == undefined) {
+    console.error('Error: Invalid value received for array in "For" component.')
+    return <></>
+  }
+
   return (
     <>
       {array.map((obj, index) => (

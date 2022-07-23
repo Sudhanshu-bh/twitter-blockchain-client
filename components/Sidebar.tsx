@@ -56,8 +56,6 @@ const Sidebar = ({ initialSelectedIcon = 'Home' }: SidebarProps) => {
     setHandle(currentUser.handle)
   }, [currentUser])
 
-  console.log(currentUser)
-
   const [selected, setSelected] = useState<string>(initialSelectedIcon)
 
   useEffect(() => {
@@ -144,10 +142,10 @@ const Sidebar = ({ initialSelectedIcon = 'Home' }: SidebarProps) => {
           <div className={style.profileRight}>
             <div className={style.details}>
               <div className={style.name}>
-                {uName && uName.length > 15 ? `${uName.slice(0, 14)}...` : uName}
+                {uName?.length > 15 ? `${uName.slice(0, 14)}...` : uName}
               </div>
               <div className={style.handle}>
-                @{handle && handle.length > 15 ? `${handle.slice(0, 14)}...` : handle}
+                @{handle?.length > 15 ? `${handle.slice(0, 14)}...` : handle}
               </div>
             </div>
             <div className={style.moreContainer}>

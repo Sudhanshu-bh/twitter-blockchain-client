@@ -16,7 +16,6 @@ interface FeedProps {}
 
 const Feed = (props: FeedProps) => {
   const { tweets } = useContext(TwitterContext)
-  console.log(tweets)
 
   return (
     <div className={page.middleContent}>

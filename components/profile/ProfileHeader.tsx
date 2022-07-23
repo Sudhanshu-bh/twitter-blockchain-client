@@ -1,8 +1,11 @@
-import * as React from 'react'
+import { FC, useContext } from 'react'
 import { BsArrowLeftShort } from 'react-icons/bs'
 import { useRouter } from 'next/router'
-import { gColors } from '../../styles/gStyles'
 import If from '../common/If'
+import { TwitterContext } from '../../context/TwitterContext'
+import defaultCoverImage from '../../assets/default_coverImage.png'
+import defaultProfileImage from '../../assets/default_profileImage.jpg'
+import Image from 'next/image'
 
 const style = {
   header: `py-1 px-3 mt-2 flex items-center`,
@@ -11,8 +14,8 @@ const style = {
   backButton: `text-3xl cursor-pointer mr-2 rounded-full hover:bg-[#313b44] p-1`,
   coverPhotoContainer: `flex items-center justify-center w-full overflow-hidden`, // h-[15vh] instead of w-full
   coverPhoto: `object-cover h-full w-full`,
-  profileImageContainer: `w-full h-[8.5rem] rounded-full mt-[-4.25rem] mb-2 flex justify-start items-center px-4 flex justify-between`,
-  profileImage: `object-cover rounded-full h-full border-4 border-[#15202b]`,
+  profileImageContainer: `w-fit h-[145px] rounded-full mt-[-4.25rem] mb-2 ml-4 flex justify-start items-center flex justify-between border-4 border-[#fff] z-10`,
+  profileImage: `object-cover rounded-full h-full`,
   profileImageNft: `object-cover h-full`,
   profileImageMint: `bg-white text-black px-3 py-1 rounded-full hover:bg-[#8899a6] cursor-pointer`,
   details: `px-3`,
@@ -22,11 +25,13 @@ const style = {
 
 interface IProfileHeaderProps {}
 
-const ProfileHeader: React.FC<IProfileHeaderProps> = (props) => {
+const ProfileHeader: FC<IProfileHeaderProps> = (props) => {
   const router = useRouter()
+  const {
+    currentUser: { name: uName, handle, profileImage, coverImage, tweets },
+  } = useContext(TwitterContext)
 
   const isProfileImageNft = false
-  const currentUser = '0xbb21ebb22C06b2137810865607DccA4c9Ef2323D'
 
   return (
     <>
@@ -36,34 +41,42 @@ const ProfileHeader: React.FC<IProfileHeaderProps> = (props) => {
             <BsArrowLeftShort />
           </div>
           <div className={style.details}>
-            <div className={style.primary}>Sudhanshu</div>
-            <div className={style.secondary}>4 tweets</div>
+            <div className={style.primary}>{uName}</div>
+            <div className={style.secondary}>
+              {tweets?.length} {tweets?.length > 1 ? 'Tweets' : 'Tweet'}
+            </div>
           </div>
         </div>
         <div className={style.coverPhotoContainer}>
-          <img
-            src="https://i.pinimg.com/originals/4d/d5/85/4dd585d3e8a1a6b23f9a54e5a1076c8b.jpg"
-            alt=""
-            className={style.coverPhoto}
-          />
+          <If condition={coverImage}>
+            <Image
+              src={!coverImage ? defaultCoverImage : coverImage}
+              height={500}
+              width={1500}
+              alt=""
+              className={style.coverPhoto}
+            />
+          </If>
+          {console.log(!coverImage)}
         </div>
         <div className={isProfileImageNft ? 'hex' : style.profileImageContainer}>
-          <img
-            src="https://pbs.twimg.com/profile_images/1149028860677148673/qJiM1tI9_400x400.jpg"
+          <Image
+            src={!profileImage ? defaultProfileImage : profileImage}
+            height={135}
+            width={135}
             alt=""
-            className={style.profileImage}
+            className={`${style.profileImage} ${isProfileImageNft && 'hex'}`}
+            style={{ border: '4px solid #15202b!important' }}
           />
+          {console.log('Profile Image:: ', !profileImage)}
         </div>
         <div className={style.details}>
-          <div className={style.primary}>Chandler Bing</div>
+          <div className={style.primary}>{uName}</div>
           <div className={style.secondary}>
-            <If condition={!!currentUser}>
-              @{currentUser.slice(0,8)}...{currentUser.slice(-5)}
-            </If>
+            <If condition={!!handle}>@{handle}</If>
           </div>
         </div>
         <div className={style.nav}>
-          <div>About</div>
           <div className={style.activeNav}>Tweets</div>
           <div>Tweets & Replies</div>
           <div>Media</div>

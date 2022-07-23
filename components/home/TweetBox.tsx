@@ -25,7 +25,7 @@ export interface TweetBoxProps {}
 export default function TweetBox(props: TweetBoxProps) {
   const [tweetMessage, setTweetMessage] = useState('')
   const [isTweetValid, setIsTweetValid] = useState(false)
-  const { currentAccount, currentUser, tweets, fetchTweets } = useContext(TwitterContext)
+  const { currentAccount, currentUser, fetchTweets } = useContext(TwitterContext)
 
   const handleTweetMsgChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = event.target
