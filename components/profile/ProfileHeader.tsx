@@ -14,8 +14,8 @@ const style = {
   backButton: `text-3xl cursor-pointer mr-2 rounded-full hover:bg-[#313b44] p-1`,
   coverPhotoContainer: `flex items-center justify-center w-full overflow-hidden`, // h-[15vh] instead of w-full
   coverPhoto: `object-cover h-full w-full`,
-  profileImageContainer: `w-fit h-[145px] rounded-full mt-[-4.25rem] mb-2 ml-4 flex justify-start items-center flex justify-between border-4 border-[#fff] z-10`,
-  profileImage: `object-cover rounded-full h-full`,
+  profileImageContainer: `w-[140px] h-[140px] relative rounded-full mt-[-4.25rem] mb-2 ml-4 flex justify-start items-center flex justify-between overflow-hidden border-4 border-[#15202b]`,
+  profileImage: `object-cover rounded-full h-full z-10`,
   profileImageNft: `object-cover h-full`,
   profileImageMint: `bg-white text-black px-3 py-1 rounded-full hover:bg-[#8899a6] cursor-pointer`,
   details: `px-3`,
@@ -57,18 +57,16 @@ const ProfileHeader: FC<IProfileHeaderProps> = (props) => {
               className={style.coverPhoto}
             />
           </If>
-          {console.log(!coverImage)}
         </div>
         <div className={isProfileImageNft ? 'hex' : style.profileImageContainer}>
           <Image
             src={!profileImage ? defaultProfileImage : profileImage}
-            height={135}
-            width={135}
+            layout="fill"
+            objectFit="contain"
             alt=""
             className={`${style.profileImage} ${isProfileImageNft && 'hex'}`}
             style={{ border: '4px solid #15202b!important' }}
           />
-          {console.log('Profile Image:: ', !profileImage)}
         </div>
         <div className={style.details}>
           <div className={style.primary}>{uName}</div>

@@ -9,7 +9,7 @@ export const TwitterProvider = ({ children }: any) => {
   const [appStatus, setAppStatus] = useState('loading')
   const [currentAccount, setCurrentAccount] = useState('')
   const [currentUser, setCurrentUser] = useState({})
-  const [tweets, setTweets] = useState([])
+  const [tweets, setTweets] = useState<object[]>([])
 
   const router = useRouter()
 
@@ -90,6 +90,14 @@ export const TwitterProvider = ({ children }: any) => {
     }
   }
 
+  const getProfileImageUrl = async (imageUri: string, isNft: boolean) => {
+    let url = imageUri
+    if (isNft) {
+      url = `https://gateway.pinata.cloud/ipfs/${imageUri}`
+    }
+    return url
+  }
+
   const fetchTweets = async () => {
     const query = `
     *[_type == "tweet"]{
@@ -100,7 +108,18 @@ export const TwitterProvider = ({ children }: any) => {
     `
     const sanityResp = await client.fetch(query)
 
-    setTweets(sanityResp)
+    setTweets([])
+
+    sanityResp.forEach(async (item: any) => {
+      const profileImageUrl = await getProfileImageUrl(
+        item.author.profileImage,
+        item.author.isProfileImageNft
+      )
+
+      item.author.profileImage = profileImageUrl
+
+      setTweets((prevState) => [...prevState, item])
+    })
   }
 
   const getCurrentUserDetails = async () => {
@@ -119,9 +138,14 @@ export const TwitterProvider = ({ children }: any) => {
     `
 
     const sanityResp = await client.fetch(query)
+    let userData = sanityResp[0]
 
-    setCurrentUser(sanityResp[0])
-    console.log(sanityResp[0])
+    userData.profileImage = await getProfileImageUrl(
+      userData.profileImage,
+      userData.isProfileImageNft
+    )
+
+    setCurrentUser(userData)
   }
 
   return (

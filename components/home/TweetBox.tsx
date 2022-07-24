@@ -10,7 +10,7 @@ const style = {
   wrapper: `px-4 flex flex-row border-b border-[#38444d] pb-4`,
   tweetBoxLeft: `mr-4`,
   tweetBoxRight: `flex-1`,
-  profileImage: `height-12 w-12 rounded-full`,
+  profileImage: `h-12 w-12 rounded-full object-cover`,
   inputField: `w-full h-full outline-none bg-transparent text-lg`,
   formLowerContainer: `flex`,
   iconsContainer: `text-[#1d9bf0] flex flex-1 items-center`,

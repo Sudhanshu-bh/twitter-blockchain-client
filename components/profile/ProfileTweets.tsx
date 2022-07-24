@@ -14,7 +14,6 @@ interface IProfileTweetsProps {}
 const ProfileTweets: FC<IProfileTweetsProps> = (props) => {
   const { currentUser } = useContext(TwitterContext)
 
-  console.log(currentUser?.tweets)
   const userTweets = currentUser?.tweets?.map((tweet: any) => ({
     author: {
       name: currentUser.name,
@@ -24,7 +23,6 @@ const ProfileTweets: FC<IProfileTweetsProps> = (props) => {
     },
     ...tweet,
   }))
-  console.log(userTweets)
 
   return (
     <>

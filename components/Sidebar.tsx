@@ -1,5 +1,3 @@
-import Link from 'next/link'
-
 import { useEffect, useContext, useState } from 'react'
 import { FiBell, FiMoreHorizontal } from 'react-icons/fi'
 import { VscTwitter } from 'react-icons/vsc'
@@ -9,10 +7,15 @@ import { HiOutlineMail, HiMail } from 'react-icons/hi'
 import { FaHashtag, FaBell } from 'react-icons/fa'
 import { BsBookmark, BsBookmarkFill, BsPerson, BsPersonFill } from 'react-icons/bs'
 import { CgMoreO } from 'react-icons/cg'
+import Image from 'next/image'
 
 import SidebarOption from './SidebarOption'
 import { useRouter } from 'next/router'
 import { TwitterContext } from '../context/TwitterContext'
+import If from './common/If'
+import Modal from 'react-modal'
+import ProfileImageMinter from './profile/mintingModel/ProfileImageMinter'
+import { customStyles } from '../lib/constants'
 
 const style = {
   wrapper: `fixed h-screen px-8 flex flex-col`,
@@ -20,8 +23,8 @@ const style = {
   tweetButton: `bg-[#1d9bf0] hover:bg-[#1b8cd8] flex items-center justify-center font-bold rounded-3xl h-[50px] mt-[20px] cursor-pointer`,
   navContainer: `flex-1`,
   profileButton: `flex items-center mb-6 cursor-pointer hover:bg-[#333c45] rounded-[100px] p-2`,
-  profileLeft: `flex item-center justify-center mr-4 h-11 w-11`,
-  profileImage: `h-11 w-11 rounded-full`,
+  profileLeft: `flex item-center justify-center mr-4 h-11 w-11 relative`,
+  profileImage: `h-11 w-11 rounded-full object-cover`,
   profileRight: `flex-1 flex`,
   details: `flex-1`,
   name: `font-medium`,
@@ -133,15 +136,19 @@ const Sidebar = ({ initialSelectedIcon = 'Home' }: SidebarProps) => {
         </div>
         <div className={style.profileButton}>
           <div className={style.profileLeft}>
-            <img
-              src={currentUser.profileImage}
-              alt="profile"
-              className={`${style.profileImage} ${currentUser.isProfileImageNft && 'smallHex'}`}
-            />
+            <If condition={currentUser && currentUser.profileImage}>
+              <Image
+                src={currentUser.profileImage}
+                layout="fill"
+                alt="profile"
+                className={`${style.profileImage} ${currentUser.isProfileImageNft && 'smallHex'}`}
+              />
+            </If>
           </div>
           <div className={style.profileRight}>
             <div className={style.details}>
               <div className={style.name}>
+                {!uName && <div style={{ width: '128px' }}></div>}
                 {uName?.length > 15 ? `${uName.slice(0, 14)}...` : uName}
               </div>
               <div className={style.handle}>
@@ -154,6 +161,14 @@ const Sidebar = ({ initialSelectedIcon = 'Home' }: SidebarProps) => {
           </div>
         </div>
       </div>
+
+      <Modal
+        isOpen={router && !!router.query.mint}
+        onRequestClose={() => router.back()}
+        style={customStyles}
+      >
+        <ProfileImageMinter />
+      </Modal>
     </div>
   )
 }
