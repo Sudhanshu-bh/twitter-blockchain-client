@@ -28,7 +28,12 @@ interface InitialStateProps {
 const InitialState = (props: InitialStateProps) => {
   const { name, setName, profileImage, setProfileImage, description, setDescription, mint } = props
   return (
-    <div className={style.wrapper}>
+    <form
+      className={style.wrapper}
+      onSubmit={() => {
+        if (name && description && profileImage) mint()
+      }}
+    >
       <div className={style.inputFieldsContainer}>
         <div className={style.inputContainer}>
           <label
@@ -71,18 +76,17 @@ const InitialState = (props: InitialStateProps) => {
           <GiEarthAmerica />
           <span className={style.visibilityText}>Everyone can see this</span>
         </div>
-        <div
-          className={
-            name && description && profileImage ? style.mintButton : style.inactiveMintButton
-          }
-          onClick={() => {
-            if (name && description && profileImage) mint()
-          }}
-        >
-          Mint
-        </div>
+        <button type="submit">
+          <div
+            className={
+              name && description && profileImage ? style.mintButton : style.inactiveMintButton
+            }
+          >
+            Mint
+          </div>
+        </button>
       </div>
-    </div>
+    </form>
   )
 }
 

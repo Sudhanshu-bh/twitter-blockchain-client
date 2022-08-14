@@ -66,10 +66,14 @@ const ProfileImageMinter = () => {
       data: await contract!.mint(currentAccount, `ipfs://${ipfsJsonHash}`),
     }
 
-    await metamask.request({
-      method: 'eth_sendTransaction',
-      params: [transactionParameters],
-    })
+    try {
+      await metamask.request({
+        method: 'eth_sendTransaction',
+        params: [transactionParameters],
+      })
+    } catch (err) {
+      setStatus('finished')
+    }
 
     setStatus('finished')
   }

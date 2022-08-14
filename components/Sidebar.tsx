@@ -129,7 +129,7 @@ const Sidebar = ({ initialSelectedIcon = 'Home' }: SidebarProps) => {
 
           <div
             className={style.tweetButton}
-            onClick={() => router.push(`${router.pathname}/?mint=${currentAccount}`)}
+            onClick={() => router.push(`${router.pathname}\?mint=${currentAccount}`)}
           >
             Mint
           </div>

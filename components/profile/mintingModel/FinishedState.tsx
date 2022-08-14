@@ -18,11 +18,18 @@ const FinishedState = () => {
     getCurrentUserDetails()
   }, [])
 
+  const reloadPage = () => {
+    router.push('\\')
+    setTimeout(() => {
+      router.reload()
+    }, 500)
+  }
+
   return (
     <div className={style.wrapper}>
       <div className={style.title}>Minting successful!</div>
       <Image src={CheckMark} alt="checkmark" height={100} width={100} />
-      <div className={style.closeButton} onClick={() => router.push('/')}>
+      <div className={style.closeButton} onClick={reloadPage}>
         Close
       </div>
     </div>
